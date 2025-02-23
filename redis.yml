@@ -1,0 +1,11 @@
+app-redis:
+    container_name: app-redis
+    image: redis:7.4
+    restart: unless-stopped
+    environment:
+        REDIS_PASSWORD: ${REDIS_PASSWORD}
+    command: sh -c "exec redis-server --requirepass \"$REDIS_PASSWORD\""
+    sysctls:
+        - net.core.somaxconn=511
+    networks:
+        - app

@@ -1,0 +1,37 @@
+app-elasticsearch:
+    container_name: app-elasticsearch
+    image: elasticsearch:8.17.2
+    restart: unless-stopped
+    environment:
+        - xpack.security.enabled=false
+        - node.name=es01
+        - cluster.name=${CLUSTER_NAME}
+        - discovery.type=single-node
+        - ELASTIC_USERNAME=${ELASTIC_USERNAME}
+        - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+        - bootstrap.memory_lock=true
+        - ES_JAVA_OPTS=-Xms1G -Xmx1G
+    ulimits:
+        memlock:
+            soft: -1
+            hard: -1
+    cap_add:
+        - IPC_LOCK
+    ports:
+        - ...
+    networks:
+        - app
+
+app-kibana:
+    container_name: app-kibana
+    image: kibana:8.17.2
+    environment:
+        - ELASTICSEARCH_HOSTS=http://app-elasticsearch:9200
+        - ELASTICSEARCH_USERNAME=${ELASTIC_USERNAME}
+        - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
+    ports:
+        - ...
+    depends_on:
+        - app-elasticsearch
+    networks:
+        - app

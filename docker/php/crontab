@@ -1,0 +1,3 @@
+SHELL=/bin/bash
+# laravel example
+* * * * * cd /var/www && /usr/local/bin/php /var/www/artisan schedule:run

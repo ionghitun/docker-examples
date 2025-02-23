@@ -1,0 +1,14 @@
+app-mongo:
+    container_name: app-mongo
+    image: mongo:8.0
+    restart: unless-stopped
+    ports:
+        - ...
+    mem_limit: 3000m
+    logging:
+        driver: "json-file"
+        options:
+            max-size: "30m"
+            max-file: "10"
+    networks:
+        - app
